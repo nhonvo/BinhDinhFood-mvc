@@ -3,20 +3,26 @@ using BinhDinhFood.Domain;
 using BinhDinhFood.Infrastructure;
 using BinhDinhFood.Infrastructure.Hubs;
 using BinhDinhFood.Infrastructure.Repositories;
+using BinhDinhFoodWeb.Application.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = builder.Configuration.Get<AppSettings>();
-
-// Add services to the container.
+// Get configuration
+var configuration = builder.Configuration.Get<AppSettings>() ?? throw new Exception("Failed to load appsettings.json");
 builder.Services.AddSingleton(configuration);
 
+// ---------- Services ----------
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<BinhDinhFoodDbContext>(options =>
-        options.UseSqlServer(configuration.ConnectionStrings.DefaultConnection));
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddControllers();
+
+// ---------- DB Context ----------
+builder.Services.AddDbContext<BinhDinhFoodDbContext>(options =>
+    options.UseSqlServer(configuration.ConnectionStrings.DefaultConnection));
+
+// ---------- Repositories ----------
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
@@ -31,113 +37,101 @@ builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddScoped<BinhDinhFoodDbContextInitializer>();
 
+// ---------- Caching & Sessions ----------
 builder.Services.AddDistributedMemoryCache();
-
-builder.Services.AddServerSideBlazor();
-
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
-builder.Services.AddAuthentication("Signin")
-    .AddCookie("Signin", options =>
-    {
-        options.AccessDeniedPath = new PathString("/Account/Access");
-        options.Cookie = new CookieBuilder
-        {
-            //Domain = "",
-            HttpOnly = true,
-            Name = "SigninCookie",
-            Path = "/",
-            SameSite = SameSiteMode.Lax,
-            SecurePolicy = CookieSecurePolicy.SameAsRequest
-        };
-        options.Events = new CookieAuthenticationEvents
-        {
-            OnSignedIn = context =>
-            {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now,
-                    "OnSignedIn", context.Principal.Identity.Name);
-                return Task.CompletedTask;
-            },
-            OnSigningOut = context =>
-            {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now,
-                    "OnSigningOut", context.HttpContext.User.Identity.Name);
-                return Task.CompletedTask;
-            },
-            OnValidatePrincipal = context =>
-            {
-                Console.WriteLine("{0} - {1}: {2}", DateTime.Now,
-                    "OnValidatePrincipal", context.Principal.Identity.Name);
-                return Task.CompletedTask;
-            }
-        };
-        //options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-        options.LoginPath = new PathString("/User/Login");
-        options.LogoutPath = "/User/Logout";
-        options.ReturnUrlParameter = "ReturnUrl";
-        options.SlidingExpiration = true;
-    });
-
-
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(10);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-var emailConfig = builder.Configuration.GetSection("MailSettings").Get<MailSettings>();
-builder.Services.AddSingleton(emailConfig);
-builder.Services.AddControllers();
 
-// signal R count number customer online
+// ---------- Authentication ----------
+builder.Services.AddAuthentication("Signin")
+    .AddCookie("Signin", options =>
+    {
+        options.LoginPath = "/User/Login";
+        options.LogoutPath = "/User/Logout";
+        options.AccessDeniedPath = "/Account/Access";
+        options.ReturnUrlParameter = "ReturnUrl";
+        options.SlidingExpiration = true;
+        options.Cookie = new CookieBuilder
+        {
+            Name = "SigninCookie",
+            Path = "/",
+            HttpOnly = true,
+            SecurePolicy = CookieSecurePolicy.SameAsRequest,
+            SameSite = SameSiteMode.Lax
+        };
+        options.Events = new CookieAuthenticationEvents
+        {
+            OnSignedIn = context =>
+            {
+                Console.WriteLine($"{DateTime.Now} - OnSignedIn: {context.Principal.Identity?.Name}");
+                return Task.CompletedTask;
+            },
+            OnSigningOut = context =>
+            {
+                Console.WriteLine($"{DateTime.Now} - OnSigningOut: {context.HttpContext.User.Identity?.Name}");
+                return Task.CompletedTask;
+            },
+            OnValidatePrincipal = context =>
+            {
+                Console.WriteLine($"{DateTime.Now} - OnValidatePrincipal: {context.Principal.Identity?.Name}");
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+// ---------- SignalR & CORS ----------
 builder.Services.AddSignalR();
+// builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
+//         policy.WithOrigins("http://binhdinhfood-001-site1.dtempurl.com/")
+//               .AllowAnyHeader()
+//               .WithMethods("GET", "POST")
+//               .AllowCredentials()));
 
-builder.Services.AddCors(options =>
-options.AddDefaultPolicy(builder => builder.WithOrigins("http://binhdinhfood-001-site1.dtempurl.com/").AllowAnyHeader().WithMethods("GET", "POST").AllowCredentials()));
+// ---------- Email ----------
+builder.Services.AddTransient<IMailService, MailService>();
 
+// ---------- Blazor Server ----------
+builder.Services.AddServerSideBlazor();
+
+// ---------- App Initialization ----------
 var app = builder.Build();
 
-using var scope = app.Services.CreateScope();
-var initialize = scope.ServiceProvider.GetRequiredService<BinhDinhFoodDbContextInitializer>();
-await initialize.InitializeAsync();
+using (var scope = app.Services.CreateScope())
+{
+    var initializer = scope.ServiceProvider.GetRequiredService<BinhDinhFoodDbContextInitializer>();
+    await initializer.InitializeAsync();
+}
 
-// Configure the HTTP request pipeline.
+// ---------- Middleware Pipeline ----------
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-// handler error 404 page
-app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode = {0}");
 
+app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
+app.UseAuthentication(); // <-- must come before Authorization
 app.UseAuthorization();
-app.UseAuthentication();
 
 app.UseSession();
+app.UseCors(); // <-- for SignalR
 
-// belong to signal R
-app.UseCors();
-
+// ---------- Routes ----------
 app.MapAreaControllerRoute(
     name: "Admin",
     areaName: "Admin",
     pattern: "Admin/{controller=AdmAccount}/{action=Login}/{id?}");
-
 
 app.MapControllerRoute(
     name: "default",

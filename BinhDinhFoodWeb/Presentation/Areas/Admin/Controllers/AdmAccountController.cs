@@ -77,7 +77,12 @@ public class AdmAccountController : Controller
                 return View(model);
             }
             string linkResetPassword = _repo.CreateResetPasswordLink(model.UserName);
-            await _mailService.SendEmailAsync(new MailRequest(model.Email, "Reset password", linkResetPassword));
+            await _mailService.SendEmailAsync(new MailRequest
+            {
+                ToEmail = model.Email,
+                Subject = "Reset password",
+                Body = linkResetPassword
+            });
             return RedirectToAction("ShowMessage");
         }
         else

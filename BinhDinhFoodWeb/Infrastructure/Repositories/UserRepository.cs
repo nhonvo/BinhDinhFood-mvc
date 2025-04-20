@@ -2,27 +2,20 @@
 using System.Text;
 using BinhDinhFood.Application.Interfaces;
 using BinhDinhFood.Domain.Entities;
-using BinhDinhFood.Infrastructure;
 using BinhDinhFood.Presentation.Models.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace BinhDinhFood.Infrastructure.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(BinhDinhFoodDbContext context, IWebHostEnvironment appEnvironment) : IUserRepository
 {
-    private readonly BinhDinhFoodDbContext _context;
-    private readonly IWebHostEnvironment _appEnvironment;
+    private readonly BinhDinhFoodDbContext _context = context;
+    private readonly IWebHostEnvironment _appEnvironment = appEnvironment;
 
-    public UserRepository(BinhDinhFoodDbContext context, IWebHostEnvironment appEnvironment)
-    {
-        _context = context;
-        _appEnvironment = appEnvironment;
-    }
     private string Encode(string originalPassword)
     {
-        MD5 md5 = MD5.Create();
         byte[] originalBytes = Encoding.Default.GetBytes(originalPassword);
-        byte[] encodedBytes = md5.ComputeHash(originalBytes);
+        byte[] encodedBytes = MD5.HashData(originalBytes);
 
         return BitConverter.ToString(encodedBytes);
     }
@@ -30,58 +23,55 @@ public class UserRepository : IUserRepository
     {
         if (length < 0)
         {
-            throw new ArgumentOutOfRangeException("length", "length cannot be less than zero.");
+            throw new Exception($"{length} cannot be less than zero.");
         }
 
         if (string.IsNullOrEmpty(allowedChars))
         {
-            throw new ArgumentException("allowedChars may not be empty.");
+            throw new Exception("allowedChars may not be empty.");
         }
 
         const int byteSize = 0x100;
         var allowedCharSet = new HashSet<char>(allowedChars).ToArray();
         if (byteSize < allowedCharSet.Length)
         {
-            throw new ArgumentException(string.Format("allowedChars may contain no more than {0} characters.", byteSize));
+            throw new Exception(string.Format("allowedChars may contain no more than {0} characters.", byteSize));
         }
 
         // Guid.NewGuid and System.Random are not particularly random. By using a
         // cryptographically-secure random number generator, the caller is always
         // protected, regardless of use.
-        using (var rng = RandomNumberGenerator.Create())
+        using var rng = RandomNumberGenerator.Create();
+        var result = new StringBuilder();
+        var buf = new byte[128];
+        while (result.Length < length)
         {
-            var result = new StringBuilder();
-            var buf = new byte[128];
-            while (result.Length < length)
+            rng.GetBytes(buf);
+            for (var i = 0; i < buf.Length && result.Length < length; ++i)
             {
-                rng.GetBytes(buf);
-                for (var i = 0; i < buf.Length && result.Length < length; ++i)
+                // Divide the byte into allowedCharSet-sized groups. If the
+                // random value falls into the last group and the last group is
+                // too small to choose from the entire allowedCharSet, ignore
+                // the value in order to avoid biasing the result.
+                var outOfRangeStart = byteSize - byteSize % allowedCharSet.Length;
+                if (outOfRangeStart <= buf[i])
                 {
-                    // Divide the byte into allowedCharSet-sized groups. If the
-                    // random value falls into the last group and the last group is
-                    // too small to choose from the entire allowedCharSet, ignore
-                    // the value in order to avoid biasing the result.
-                    var outOfRangeStart = byteSize - byteSize % allowedCharSet.Length;
-                    if (outOfRangeStart <= buf[i])
-                    {
-                        continue;
-                    }
-
-                    result.Append(allowedCharSet[buf[i] % allowedCharSet.Length]);
+                    continue;
                 }
+
+                result.Append(allowedCharSet[buf[i] % allowedCharSet.Length]);
             }
-            return result.ToString();
         }
+        return result.ToString();
     }
     private Customer GetCustomer(int id)
     {
         return _context.Customers.Find(id);
     }
-    public InforViewModel GetUserInfor(int id)
+    public InfoViewModel GetUserInfo(int id)
     {
         var user = GetCustomer(id);
-        InforViewModel model = new InforViewModel();
-        return new InforViewModel
+        return new InfoViewModel
         {
             FullName = user.CustomerFullName,
             Address = user.CustomerAddress,
@@ -110,7 +100,7 @@ public class UserRepository : IUserRepository
 
         return results.FirstOrDefault();
     }
-    public CookieUserItem Register(RegisterViewModel model)
+    public CookieUserItem RegisterAsync(RegisterViewModel model)
     {
         var user = new Customer
         {
@@ -141,21 +131,21 @@ public class UserRepository : IUserRepository
         _context.SaveChanges();
         return "http://binhdinhfood-001-site1.dtempurl.com/User/ResetPassword?user=" + customerUserName + "&token=" + token;
     }
-    public async Task<bool> HaveAccount(ForgotViewModel model)
+    public async Task<bool> HaveAccountAsync(ForgotViewModel model)
     {
         return await _context.Customers.AnyAsync(x => x.CustomerUserName == model.UserName && x.CustomerEmail == model.Email);
     }
-    public async Task<bool> HaveAccount(string userName, string password)
+    public async Task<bool> HaveAccountAsync(string userName, string password)
     {
         return await _context.Customers.AnyAsync(_context => _context.CustomerUserName == userName && _context.CustomerPassword == Encode(password));
     }
-    public async Task ResetPassWord(ResetViewModel model)
+    public async Task ResetPasswordAsync(ResetViewModel model)
     {
         var customer = GetCustomer(model.UserName);
         customer.CustomerPassword = Encode(model.Password);
         await _context.SaveChangesAsync();
     }
-    public async Task ChangeInforUser(InforViewModel model, int id, IFormFileCollection files)
+    public async Task ChangeInfoUserAsync(InfoViewModel model, int id, IFormFileCollection files)
     {
         var user = GetCustomer(id);
         user.CustomerFullName = model.FullName;
@@ -164,32 +154,30 @@ public class UserRepository : IUserRepository
         //user.CustomerImage = model.Image;
         user.CustomerAddress = model.Address;
 
-        foreach (var Image in files)
+        foreach (var image in files)
         {
-            if (Image != null && Image.Length > 0)
+            if (image != null && image.Length > 0)
             {
-                var file = Image;
+                var file = image;
                 var uploads = Path.Combine(_appEnvironment.WebRootPath, "Content\\img\\staff\\");
                 if (file.Length > 0)
                 {
                     var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
-                    using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
-                    {
-                        await file.CopyToAsync(fileStream);
-                        user.CustomerImage = fileName;
-                    }
+                    using var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create);
+                    await file.CopyToAsync(fileStream);
+                    user.CustomerImage = fileName;
                 }
             }
         }
         await _context.SaveChangesAsync();
     }
-    public async Task ClearImage(int id)
+    public async Task ClearImageAsync(int id)
     {
         var user = GetCustomer(id);
         user.CustomerImage = "avatar.jpg";
         await _context.SaveChangesAsync();
     }
-    public async Task ChangePasswordUser(ChangePasswordViewModel model, int id)
+    public async Task ChangePasswordUserAsync(ChangePasswordViewModel model, int id)
     {
         var user = GetCustomer(id);
         user.CustomerPassword = Encode(model.NewPassword);

@@ -52,7 +52,7 @@ public class ForgotViewModel
     [Display(Name = "Email")]
     public string Email { get; set; }
 }
-public class InforViewModel
+public class InfoViewModel
 {
     [DisplayName("Họ tên")]
     public string FullName { get; set; }

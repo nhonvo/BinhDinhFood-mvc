@@ -323,7 +323,7 @@ public class CartController : Controller
         }
         // get customer 
         int id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        InforViewModel customer = _userRepository.GetUserInfor(id);
+        InfoViewModel customer = _userRepository.GetUserInfo(id);
         ViewBag.Name = customer.FullName;
         ViewBag.Phone = customer.Phone;
         ViewBag.Address = customer.Address;
