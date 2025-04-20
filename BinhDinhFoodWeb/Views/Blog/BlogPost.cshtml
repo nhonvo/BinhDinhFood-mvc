@@ -4,7 +4,12 @@
 }
 <div class="container margin_30">
     <div class="page_header">
-        @await Component.InvokeAsync("HeaderComponent")
+        <div class="breadcrumbs">
+            <ul>
+                <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                <li><a asp-action="Index" asp-controller="Blog">Bài viết &amp; Tin tức</a></li>
+            </ul>
+        </div>
     </div>
     <!-- /page_header -->
     <div class="row">

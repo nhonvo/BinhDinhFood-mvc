@@ -1,0 +1,13 @@
+﻿@using BinhDinhFood.Models.Entities
+<div class="sidebar">
+    <h4>Recent Posts</h4>
+    @foreach (var post in Posts)
+    {
+        <p><a href="/BlogPost/@post.BlogId">@post.BlogName</a></p>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Blog> Posts { get; set; } = new();
+}

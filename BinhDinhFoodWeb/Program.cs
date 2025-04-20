@@ -36,6 +36,7 @@ builder.Services.AddScoped<BinhDinhFoodDbContextInitializer>();
 
 builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddServerSideBlazor();
 
 builder.Services.AddSession(options =>
 {

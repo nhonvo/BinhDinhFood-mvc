@@ -4,7 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RazorLangVersion>7.0</RazorLangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\**" />
+    <Content Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Remove="wwwroot\Content\img\staff\avatar.jpg" />
@@ -217,6 +225,7 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="MailKit" Version="3.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
@@ -228,10 +237,12 @@
     <PackageReference Include="MimeKit" Version="4.8.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.3" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Radzen.Blazor" Version="5.0.2" />
+    
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="Models\Blogs\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://appliedengdesign.github.io/cnccodes-json-schema/draft/2022-07/schema" /></VisualStudio></ProjectExtensions>
