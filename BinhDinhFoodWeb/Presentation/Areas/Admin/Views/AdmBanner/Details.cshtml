@@ -1,0 +1,64 @@
+﻿@model Banner 
+@{ ViewData["Title"] = "Details"; Layout =
+"~/Areas/Admin/Views/Shared/_Layout.cshtml"; }
+<div class="pagetitle">
+  <h1>Chi tiết banner</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a asp-action="Index" asp-controller="AdmHome">Trang chủ</a>
+      </li>
+      <li class="breadcrumb-item"><a asp-action="Index">Quản lý Banner</a></li>
+      <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Chi tiết banner</h5>
+    <hr />
+    <dl class="row">
+      <dt class="col-sm-2">@Html.DisplayNameFor(model => model.BannerName)</dt>
+      <dd class="col-sm-10">@Html.DisplayFor(model => model.BannerName)</dd>
+      <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.ProductDiscount)
+      </dt>
+      <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.ProductDiscount)
+      </dd>
+      <dt class="col-sm-2">@Html.DisplayNameFor(model => model.BannerPrice)</dt>
+      <dd class="col-sm-10">@Html.DisplayFor(model => model.BannerPrice)</dd>
+      <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.BannerDescription)
+      </dt>
+      <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.BannerDescription)
+      </dd>
+      <dt class="col-sm-2">@Html.DisplayNameFor(model => model.BannerImage)</dt>
+      <dd class="col-sm-10">
+        <img
+          width="100"
+          src="~/Content/img/slides/@Html.DisplayFor(model => model.BannerImage)"
+          alt="@Html.DisplayFor(model => model.BannerImage)"
+        />
+      </dd>
+      <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.BannerDateCreated)
+      </dt>
+      <dd class="col-sm-10">@Model.BannerDateCreated.ToShortDateString()</dd>
+    </dl>
+  </div>
+</div>
+<div>
+  <a
+    asp-action="Edit"
+    asp-route-id="@Model?.BannerId"
+    class="btn btn-warning rounded-pill"
+    ><i class="bi bi-pencil"></i
+  ></a>
+  |
+  <a class="btn btn-dark rounded-pill" asp-action="Index"
+    ><i class="bi bi-caret-left"></i>Trở về</a>
+</div>

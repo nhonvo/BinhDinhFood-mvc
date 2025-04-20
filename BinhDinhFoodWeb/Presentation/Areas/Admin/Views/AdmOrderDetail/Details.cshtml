@@ -1,0 +1,47 @@
+﻿@model OrderDetail
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="pagetitle">
+    <h1>Quản lý hóa đơn</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdmHome">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Quản lý hóa đơn</a></li>
+            <li class="breadcrumb-item active">Chi tiết hoá đơn</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Chi tiết hóa đơn</h5>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.UnitPrice)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Quantity)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Quantity)
+            </dd>
+           
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Product)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Product.ProductName)
+            </dd>
+            
+        </dl>
+    </div>
+</div>
+<div>
+    <a class="btn btn-dark rounded-pill" asp-action="Index"><i class="bi bi-caret-left"></i>Trở về</a>
+</div>

@@ -1,0 +1,68 @@
+﻿@model ProductRating 
+@{ ViewData["Title"] = "Details"; Layout =
+"~/Areas/Admin/Views/Shared/_Layout.cshtml"; }
+
+<div class="pagetitle">
+  <h1>Thông tin đánh giá sản phẩm</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a asp-action="Index" asp-controller="AdmHome">Trang chủ</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a asp-action="Index">Quản lý sản phẩm</a>
+      </li>
+      <li class="breadcrumb-item active">Chi tiết đánh giá sản phẩm</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Chi tiết bài viết</h5>
+    <hr />
+    <dl class="row">
+      <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Product.ProductName)
+      </dt>
+      <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Product.ProductName)
+        <br />
+        <img
+          width="100"
+          src="~/Content/img/products/@Html.DisplayFor(modelItem => modelItem.Product.ProductImage)"
+          alt="@Html.DisplayFor(modelItem => modelItem.Product.ProductImage)"
+        />
+      </dd>
+      <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Customer.CustomerFullName)
+      </dt>
+      <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Customer.CustomerFullName)
+        <br />
+        <img
+          width="100"
+          src="~/Content/img/staff/@Html.DisplayFor(modelItem => modelItem.Customer.CustomerImage)"
+          alt="@Html.DisplayFor(modelItem => modelItem.Customer.CustomerImage)"
+        />
+      </dd>
+      <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Stars)</dt>
+      <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Stars) <i class="bi bi-star"></i>
+      </dd>
+      <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.RatingContent)
+      </dt>
+      <dd class="col-sm-10">@Html.DisplayFor(model => model.RatingContent)</dd>
+      <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.PRDateCreated)
+      </dt>
+      <dd class="col-sm-10">@Html.DisplayFor(model => model.PRDateCreated)</dd>
+    </dl>
+  </div>
+</div>
+<div>
+  <a class="btn btn-dark rounded-pill" asp-action="Index"
+    ><i class="bi bi-caret-left"></i>Trở về</a>
+</div>

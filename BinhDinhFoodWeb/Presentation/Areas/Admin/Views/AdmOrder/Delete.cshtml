@@ -1,0 +1,72 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="pagetitle">
+    <h1>Xoá hóa đơn</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdmHome">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Quản lý hóa đơn</a> </li>
+            <li class="breadcrumb-item active">Xoá hóa đơn</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<h3>Bạn có thật sự muốn xoá?</h3>
+
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Chi tiết hóa đơn</h5>
+        <div>
+            <h4>Hóa đơn</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DayOrder)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DayOrder)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DayDelivery)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DayDelivery)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PaidState)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PaidState)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DeliveryState)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DeliveryState)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TotalMoney)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TotalMoney)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Customer)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Customer.CustomerFullName)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<form asp-action="Delete">
+    <input type="hidden" asp-for="OrderId" />
+    <input type="submit" value="Xoá" class="btn btn-danger rounded-pill" />
+    <a class="btn btn-dark rounded-pill" asp-action="Index"><i class="bi bi-caret-left"></i>Trở về</a>
+</form>

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Quản lý hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Quản lý hóa đơn</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdmHome">Trang chủ</a></li>
+            <li class="breadcrumb-item active"><a asp-action="Index">Quản lý hóa đơn</a></li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Quản lý thông tin hóa đơn</h5>
+        <!-- Table with hoverable rows -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DayOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DayDelivery)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PaidState)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DeliveryState)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalMoney)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DayOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DayDelivery)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaidState)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveryState)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalMoney)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.CustomerFullName)
+                    </td>
+                    <td>
+                        <a class="btn btn-warning rounded-pill" asp-action="Edit" asp-route-id="@item.OrderId"><i class="bi bi-pencil"></i></a>
+                        <a class="btn btn-info rounded-pill" asp-action="Details" asp-route-id="@item.OrderId"><i class="bi bi-eye"></i></a>
+                        <a class="btn btn-danger rounded-pill" asp-action="Delete" asp-route-id="@item.OrderId"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

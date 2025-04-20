@@ -1,0 +1,32 @@
+﻿
+
+<div class="col-lg-7" id="Order-tabld-detail">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Chi tiết đơn hàng của bạn</h5>
+
+            <!-- Table with hoverable rows -->
+            <table class="table table-striped" id="Order-tabld-detail">
+                <thead>
+                    <tr>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Số lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@item.ProductId</th>
+                            <td>@item.UnitPrice</td>
+                            <td>@item.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <!-- End Table with hoverable rows -->
+        </div>
+    </div>
+    <!-- Table with stripped rows -->
+</div>

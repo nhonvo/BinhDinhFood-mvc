@@ -1,6 +1,7 @@
 # PROJECT WEBSITE PROGRAMING - ASP.NET MVC CORE - 2022 - BINHDINHFOOD
 
 ## Abstract
+
 - E-commerce website manage shop, sell many item about food and traditional food. The system has admin area for add, update, delete product, category, banner, ... and user area to buy product, comment, search, add in cart, ...
 - Website was built by **ASP.NET CORE** the open source technology, apply **repository pattern** to manage and maintain source in the future.
 - Here is short demo about `BinhDinhFood` website. [Click here to see full!!!](https://youtu.be/Zy37v0df-mM)
@@ -12,32 +13,30 @@
 ### Objects use
 
 - User: Buy product, wish list, cart CRUD, comment & rating, filter, edit profile, register, login, forgot password, search, filter, .
-- Admin: 
-    - Dashboard: tracking activity, number product sell, customer register.
-    - Management: product, category, banner, .
-    - Statistic: revenue month, revenue year, user subscribe month, user subscribe year, number of subscribers.
-    
+- Admin:
+  - Dashboard: tracking activity, number product sell, customer register.
+  - Management: product, category, banner, .
+  - Statistic: revenue month, revenue year, user subscribe month, user subscribe year, number of subscribers.
 
 ### Class diagram
 
 ![image-20221010023625598](assets/image-20221010023625598.png)
 
-### Overview Use case 
+### Overview Use case
 
 ![image-20221010023637928](assets/image-20221010023637928.png)
 
 ## Requirements
-- C# 
+
+- C#
 - Entity Framework (code first)
 - Asp.net MCV Core
 - Other library: pagelist, md5, mail, jquery, bootstrap, ...
 - Database (MSSQL)
-- API VNPAY 
+- API VNPAY
 - Mail model
-- MD5 encrypt 
+- MD5 encrypt
 - signal Rm Html, css, js, Jquery
-
-
 
 ### Diagram
 
@@ -81,8 +80,6 @@
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![image-20221010025123262](assets/image-20221010025123262.png) | ![image-20221010025144814](assets/image-20221010025144814.png) | ![image-20221010025153528](assets/image-20221010025153528.png) | ![image-20221010025247921](assets/image-20221010025247921.png) |
 
-
-
 ##### example: Product Management
 
 | List film                                                    | Edit                                                         | Detail                                                       | Delete                                                       |
@@ -99,7 +96,7 @@ Above is all of function we made
 
 Any question you can contact with us
 
-email: vothuongtruongnhon2002@gmail.com
+email: <vothuongtruongnhon2002@gmail.com>
 
 Author:
 

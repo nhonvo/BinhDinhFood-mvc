@@ -1,0 +1,57 @@
+﻿@model Blog 
+@{ ViewData["Title"] = "Details"; Layout =
+"~/Areas/Admin/Views/Shared/_Layout.cshtml"; }
+
+<div class="pagetitle">
+  <h1>Chỉnh sửa bài viết</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a asp-action="Index" asp-controller="AdmHome">Trang chủ</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a asp-action="Index">Quản lý bài viết</a>
+      </li>
+      <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Chi tiết bài viết</h5>
+    <hr />
+    <dl class="row">
+      <dt class="col-sm-2">@Html.DisplayNameFor(model => model.BlogName)</dt>
+      <dd class="col-sm-10">@Html.DisplayFor(model => model.BlogName)</dd>
+      <dt class="col-sm-2">@Html.DisplayNameFor(model => model.BlogContent)</dt>
+      <dd class="col-sm-10">@Html.Raw(@Model.BlogContent)</dd>
+      <dt class="col-sm-2">@Html.DisplayNameFor(model => model.BlogImage)</dt>
+      <dd class="col-sm-10">
+        <img
+          width="100"
+          src="~/Content/img/products/@Html.DisplayFor(modelItem => modelItem.BlogImage)"
+          alt="@Html.DisplayFor(modelItem => modelItem.BlogImage)"
+        />
+      </dd>
+      <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.BlogDateCreated)
+      </dt>
+      <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.BlogDateCreated)
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<div>
+  <a
+    asp-action="Edit"
+    asp-route-id="@Model?.BlogId"
+    class="btn btn-warning rounded-pill"
+    ><i class="bi bi-pencil"></i
+  ></a>
+  <a class="btn btn-dark rounded-pill" asp-action="Index"
+    ><i class="bi bi-caret-left"></i>Trở về</a>
+</div>

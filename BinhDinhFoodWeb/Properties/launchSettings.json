@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "BinhDinhFoodWeb": {
+    "BinhDinhFood": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

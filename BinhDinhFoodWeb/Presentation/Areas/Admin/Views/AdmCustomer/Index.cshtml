@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Customer>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="pagetitle">
+    <h1>Quản lý Khách hàng</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdmHome">Trang chủ</a></li>
+            <li class="breadcrumb-item active"><a asp-action="Index">Quản lý khách hàng</a></li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+@*<p>
+    <a class="btn btn-primary rounded-pill" asp-action="Create"> <i class="bi bi-file-earmark-plus"></i> Tạo Khách hàng mới </a>
+</p>*@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Quản lý thông tin khách hàng</h5>
+
+        <!-- Table with hoverable rows -->
+        <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerUserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerDateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerImage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerFullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerDateCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerState)
+            </td>
+            <td>
+                <img width="100" src="~/Content/img/staff/@Html.DisplayFor(modelItem => item.CustomerImage)" alt="@Html.DisplayFor(modelItem => item.CustomerImage)" />
+
+            </td>
+            <td>
+                @*<a class="btn btn-warning rounded-pill" asp-action="Edit" asp-route-id="@item.CustomerId"><i class="bi bi-pencil"></i></a>*@
+                <a class="btn btn-info rounded-pill" asp-action="Details" asp-route-id="@item.CustomerId"><i class="bi bi-eye"></i></a>
+                <a class="btn btn-danger rounded-pill" asp-action="Delete" asp-route-id="@item.CustomerId"><i class="bi bi-trash"></i></a>
+                        
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+    </div>
+</div>

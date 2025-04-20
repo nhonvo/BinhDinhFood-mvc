@@ -1,0 +1,65 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container margin_30">
+    <div class="page_header">
+        <h1>Bình Định Food Blog &amp; News</h1>
+    </div>
+    <!-- /page_header -->
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="widget search_blog d-block d-sm-block d-md-block d-lg-none">
+                <div class="form-group">
+                    <input type="text" name="search" id="search" class="form-control" placeholder="Search..">
+                    <button type="submit"><i class="ti-search"></i><span class="sr-only">Tìm kiếm</span></button>
+                </div>
+            </div>
+            <!-- /widget -->
+            <div class="row">
+                @foreach(var item in Model)
+                {
+                    <div class="col-md-6">
+                        <article class="blog">
+                            <figure>
+                                <a asp-action="BlogPost" asp-route-id="@item.BlogId">
+                                    <img src="~/Content/img/products/@item.BlogImage" alt="">
+                                    <div class="preview"><span>Đọc thêm</span></div>
+                                </a>
+                            </figure>
+                            <div class="post_info">
+                                <small>@item.BlogDateCreated</small>
+                                <h2><a asp-action="BlogPost" asp-route-id="@item.BlogId">@item.BlogName</a></h2>
+                                <p>@item.BlogContent</p>
+                                <ul>
+                                    <li>
+                                        <div class="thumb"><img src="~/Content/img/avatar.jpg" alt=""></div> Admin
+                                    </li>
+                                    <li><i class="ti-comment"></i>20</li>
+                                </ul>
+                            </div>
+                        </article>
+                        <!-- /article -->
+                    </div>
+                    <!-- /col -->
+                }
+            </div>
+            <!-- /row -->
+
+            <div class="pagination__wrapper no_border add_bottom_30">
+                <ul class="pagination">
+                    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new{ page }))
+                </ul>
+            </div>
+            <!-- /pagination -->
+
+        </div>
+        <!-- /col -->
+        @await Component.InvokeAsync("BlogAsideComponent")
+
+    </div>
+    <!-- /row -->
+</div>
+<!-- /container -->

@@ -1,0 +1,73 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="pagetitle">
+    <h1>Hóa đơn</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdmHome">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Quản lý hóa đơn</a> </li>
+            <li class="breadcrumb-item active">Chi tiết</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Chi tiết hóa đơn</h5>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DayOrder)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DayOrder)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DayDelivery)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DayDelivery)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PaidState)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PaidState)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DeliveryState)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DeliveryState)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TotalMoney)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TotalMoney)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Customer)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Customer.CustomerFullName)
+            </dd>
+            <dt class="col-sm-2">
+                Xem thêm
+            </dt>
+            <dd class="col-sm-10">
+                <a class="btn btn-info rounded-pill" asp-controller="AdmOrderDetail" asp-action="Details" asp-route-id="@Model.OrderId"><i class="bi bi-eye"></i></a>
+            </dd>
+        </dl>
+    </div>
+</div>
+    
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.OrderId" class="btn btn-warning rounded-pill"><i class="bi bi-pencil"></i></a>
+    <a class="btn btn-dark rounded-pill" asp-action="Index"><i class="bi bi-caret-left"></i>Trở về</a>
+</div>

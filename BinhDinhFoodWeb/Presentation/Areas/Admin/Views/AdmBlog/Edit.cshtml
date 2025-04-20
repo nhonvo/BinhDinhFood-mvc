@@ -1,0 +1,98 @@
+﻿@model Blog 
+@{ ViewData["Title"] = "Edit"; Layout =
+"~/Areas/Admin/Views/Shared/_Layout.cshtml"; }
+
+<div class="pagetitle">
+  <h1>Chỉnh sửa bài viết</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a asp-action="Index" asp-controller="AdmHome">Trang chủ</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a asp-action="Index">Quản lý bài viết</a>
+      </li>
+      <li class="breadcrumb-item active">Chỉnh sửa</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-6">
+      <form asp-action="Edit" class="row g-3" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Chỉnh sửa bài viết</h5>
+
+            <input type="hidden" asp-for="BlogId" />
+
+            <div class="form-group">
+              <label asp-for="BlogName" class="form-label"></label>
+              <input asp-for="BlogName" class="form-control" />
+              <span asp-validation-for="BlogName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+              <label
+                asp-for="BlogImage"
+                class="col-sm-2 col-form-label"
+              ></label>
+              <img
+                src="~/Content/img/products/@Model.BlogImage"
+                width="100"
+                alt=""
+              />
+              <br />
+              <input
+                asp-for="BlogImage"
+                class="form-control"
+                type="file"
+                id="upload-btn"
+                hidden
+              />
+              <label for="upload-btn" asp-for="BlogImage" class="form-label">
+                <a
+                  class="btn btn-primary btn-sm"
+                  title="Upload new profile image"
+                  ><i class="bi bi-upload"></i
+                ></a>
+              </label>
+              <a
+                asp-action="ClearImage"
+                class="btn btn-danger btn-sm"
+                title="Remove my profile image"
+                ><i class="bi bi-trash"></i
+              ></a>
+
+              <span asp-validation-for="BlogImage" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+              <label asp-for="BlogContent" class="form-label"></label>
+              <textarea asp-for="BlogContent" class="form-control"></textarea>
+              <span asp-validation-for="BlogContent" class="text-danger"></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="text-center">
+            <label for="submit">
+              <input type="submit" value="Create" id="submit" hidden />
+            </label>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-file-earmark-plus"></i> Lưu bài viết
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div>
+  <a class="btn btn-dark rounded-pill" asp-action="Index"
+    ><i class="bi bi-caret-left"></i>Trở về</a>
+</div>

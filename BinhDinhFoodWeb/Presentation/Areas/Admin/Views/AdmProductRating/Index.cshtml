@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ProductRating>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Thông tin đánh giá sản phẩm</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdmHome">Trang chủ</a></li>
+            <li class="breadcrumb-item active"><a asp-action="Index">Quản lý sản phẩm</a></li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<div class="card">
+    <div class="card-body">
+       
+        <h5 class="card-title">Thông tin sản phẩm</h5>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.ProductName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer.CustomerFullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Stars)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RatingContent)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PRDateCreated)
+                    </th>
+                    
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Customer.CustomerFullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Stars) <i class="bi bi-star"></i>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RatingContent)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PRDateCreated)
+                        </td>
+                        
+                        <td>
+                            <a class="btn btn-info rounded-pill" asp-action="Details" asp-route-id="@item.ProductRatingId"><i class="bi bi-eye"></i></a>
+                            <a class="btn btn-danger rounded-pill" asp-action="Delete" asp-route-id="@item.ProductRatingId"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

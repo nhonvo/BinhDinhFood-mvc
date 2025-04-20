@@ -1,0 +1,115 @@
+﻿@model LoginViewModel 
+@{ ViewData["Title"] = "Đăng nhập"; Layout ="~/Areas/Admin/Views/Shared/_LayoutLogin.cshtml"; }
+
+<div class="container">
+  <!-- register page-->
+  <section
+    class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
+  >
+    <div class="container">
+      <div class="row justify-content-center">
+        <div
+          class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center"
+        >
+          <div class="d-flex justify-content-center py-4">
+            <a
+              asp-action="Index"
+              asp-controller="Home"
+              class="logo d-flex align-items-center w-auto"
+            >
+              <img src="~/Content/img/Bình Định Food-black.png" alt="" />
+              <span class="d-none d-lg-block">Bình Đình Food</span>
+            </a>
+          </div>
+          <!-- End Logo -->
+
+          <div class="card mb-3">
+            <div class="form_container">
+              <div class="card-body">
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">Đăng nhập</h5>
+                  <p class="text-center small">
+                    Nhập thông tin dưới đây để đăng nhập
+                  </p>
+                </div>
+
+                <form
+                  asp-action="Login"
+                  method="post"
+                  class="row g-3 needs-validation"
+                  novalidate
+                >
+                  <div class="col-12">
+                    <label for="yourUsername" class="form-label"
+                      >Tài khoản</label
+                    >
+                    <div class="input-group has-validation">
+                      <span class="input-group-text" id="inputGroupPrepend"
+                        >#</span
+                      >
+                      <input
+                        asp-for="UserName"
+                        type="text"
+                        class="form-control"
+                        id="yourUsername"
+                        placeholder="Tài khoản*"
+                        required
+                      />
+                      <div class="invalid-feedback">
+                        Please enter your username.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourPassword" class="form-label"
+                      >Mật khẩu</label
+                    >
+                    <input
+                      asp-for="Password"
+                      type="password"
+                      class="form-control"
+                      id="yourPassword"
+                      placeholder="Mật khẩu*"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please enter your password!
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="remember"
+                        value="true"
+                        id="rememberMe"
+                      />
+                      <label class="form-check-label" for="rememberMe"
+                        >Ghi nhớ</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" type="submit">
+                      Đăng nhập
+                    </button>
+                  </div>
+                  <div class="col-12">
+                    <p class="small mb-0">
+                      Bạn không có tài khoản?
+                      <a asp-action="Register">Đăng ký ngay</a>
+                    </p>
+                    <a asp-action="ForgotPassword">Quên mật khẩu</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

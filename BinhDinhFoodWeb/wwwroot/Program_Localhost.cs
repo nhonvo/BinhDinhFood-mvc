@@ -1,8 +1,8 @@
-﻿using BinhDinhFood.Models;
-using BinhDinhFoodWeb.Hubs;
-using BinhDinhFoodWeb.Intefaces;
-using BinhDinhFoodWeb.Models;
-using BinhDinhFoodWeb.Repositories;
+﻿using BinhDinhFood.Presentation.Models;
+using BinhDinhFood.Hubs;
+using BinhDinhFood.Intefaces;
+using BinhDinhFood.Presentation.Models;
+using BinhDinhFood.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 

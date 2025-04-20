@@ -1,0 +1,91 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Quản lý sản phẩm</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdmHome">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Quản lý sản phẩm</a></li>
+            <li class="breadcrumb-item active">Chỉnh sửa sản phẩm</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-6">
+            <form asp-action="Edit" class="row g-3" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Chỉnh sửa sản phẩm</h5>
+
+                        <input type="hidden" asp-for="ProductId" />
+                        <div class="form-group">
+                            <label asp-for="ProductName" class="form-label"></label>
+                            <input asp-for="ProductName" class="form-control" />
+                            <span asp-validation-for="ProductName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProductPrice" class="form-label"></label>
+                            <input asp-for="ProductPrice" class="form-control" />
+                            <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProductDescription" class="form-label"></label>
+                            <textarea asp-for="ProductDescription" class="form-control"></textarea>
+                            <span asp-validation-for="ProductDescription" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ProductAmount" class="form-label"></label>
+                            <input asp-for="ProductAmount" class="form-control" />
+                            <span asp-validation-for="ProductAmount" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProductDiscount" class="form-label"></label>
+                            <input asp-for="ProductDiscount" class="form-control" />
+                            <span asp-validation-for="ProductDiscount" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ProductImage" class="col-sm-2 col-form-label"></label>
+                            <img src="~/Content/img/products/@Model.ProductImage" width="100" alt="" />
+                            <br />
+                            <input asp-for="ProductImage" class="form-control" type="file" id="upload-btn" hidden />
+                            <label for="upload-btn" asp-for="ProductImage" class="form-label">
+                                <a class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                            </label>
+                            <a asp-action="ClearImage" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+
+                            <span asp-validation-for="ProductImage" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CategoryId" class="form-label"></label>
+                            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                            <input type="submit" value="Create" id="submit"  hidden/>
+                    <div class="text-center">
+                        <label for="submit">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-file-earmark-plus"></i> Lưu bài viết</button>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div>
+    <a class="btn btn-dark rounded-pill" asp-action="Index"><i class="bi bi-caret-left"></i>Trở về</a>
+</div>

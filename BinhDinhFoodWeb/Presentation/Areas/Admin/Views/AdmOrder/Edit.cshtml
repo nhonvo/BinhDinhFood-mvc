@@ -1,0 +1,68 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="pagetitle">
+    <h1>Chỉnh sửa bài viết</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdmHome">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Quản lý bài viết</a> </li>
+            <li class="breadcrumb-item active">Chỉnh sửa</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit" class="row g-3" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="card">
+                    <div class="card-body">
+                        <input type="hidden" asp-for="OrderId" />
+                        <div class="form-group">
+                            <label asp-for="DayOrder" class="control-label"></label>
+                            <input asp-for="DayOrder" class="form-control" />
+                            <span asp-validation-for="DayOrder" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DayDelivery" class="control-label"></label>
+                            <input asp-for="DayDelivery" class="form-control" />
+                            <span asp-validation-for="DayDelivery" class="text-danger"></span>
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="PaidState" /> @Html.DisplayNameFor(model => model.PaidState)
+                            </label>
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="DeliveryState" /> @Html.DisplayNameFor(model => model.DeliveryState)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TotalMoney" class="control-label"></label>
+                            <input asp-for="TotalMoney" class="form-control" />
+                            <span asp-validation-for="TotalMoney" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <label for="submit">
+                            <input type="submit" value="Create" id="submit" hidden />
+                        </label>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-file-earmark-plus"></i> Lưu hóa đơn</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div>
+    <a class="btn btn-dark rounded-pill" asp-action="Index"><i class="bi bi-caret-left"></i>Trở về</a>
+</div>
+
