@@ -1,0 +1,104 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@using System.Globalization
+@using BinhDinhFood.Presentation.Models
+@{
+    ViewData["Title"] = "SearchByFilter";
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+<div class="top_banner">
+    <div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.3)">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                    <li><a asp-action="Index" asp-controller="Product">Sản phẩm</a></li>
+                </ul>
+            </div>
+            <h1>Bình Định Food - Danh sách</h1>
+        </div>
+    </div>
+    <img src="~/Content/img/slides/slide_home_4.jpg" class="img-fluid" alt="">
+</div>
+<!-- /top_banner -->
+
+<div id="stick_here"></div>
+
+@await Component.InvokeAsync("SortComponent")
+
+<!-- /toolbox -->
+<div class="container margin_30">
+    <div class="row">
+        <aside class="col-lg-3" id="sidebar_fixed">
+            <div class="filter_col">
+                <form asp-action="Filter" asp-controller="Product" method="get">
+                    <div class="inner_bt"><a href="#" class="open_filters"><i class="ti-close"></i></a></div>
+                    <div class="filter_type version_2">
+                        <h4><a href="#filter_1" data-toggle="collapse" class="opened">Loại sản phẩm</a></h4>
+                        <div class="collapse show" id="filter_1">
+                            <ul>
+                                @await Component.InvokeAsync("MiniCategoryNavBarComponent")
+                            </ul>
+                        </div>
+                        <!-- /filter_type -->
+                    </div>
+                   
+                </form>
+            </div>
+        </aside>
+        <!-- /col -->
+        <div class="col-lg-9">
+            <div class="row small-gutters">
+                @foreach (var item in Model)
+                {
+                    <div class="col-6 col-md-4">
+                        <div class="grid_item">
+                            <span class="ribbon off">- @item.ProductDiscount %</span>
+                            <figure>
+                                <a asp-action="ProductDetail" asp-route-id="@item.ProductId">
+                                    <img class="img-fluid lazy" src="~/Content/img/products/@item.ProductImage" alt="@item.ProductName" style="width: 400px; height: 200px">
+                                </a>
+                                <div data-countdown="2022/08/24" class="countdown"></div>
+                            </figure>
+                            <a href="">
+                                <h3>@item.ProductName</h3>
+                            </a>
+                            <div class="price_box">
+                                <span class="old_price">@item.ProductPrice.ToString("#,###", cul.NumberFormat)Đ</span>
+                                <span class="new_price">@Convert.ToDouble(@item.ProductPrice -(@Convert.ToDouble(@item.ProductPrice) * @Convert.ToDouble(@item.ProductDiscount) / 100)).ToString("#,###", cul.NumberFormat) Đ</span>
+                            </div>
+                            <ul>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li><a asp-action="AddInFavorite" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addFavAlert" data-ajax-failure="addCartFailAlert" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Thêm vào yêu thích"><i class="ti-heart"></i><span>Thêm vào yêu thích</span></a></li>
+                                    <li><a asp-action="AddInCart" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addCartAlert" data-ajax-failure="addCartFailAlert" data-ajax-update="#mini-cart" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Thêm vào giỏ hàng"><i class="ti-shopping-cart"></i><span>Thêm vào giỏ hàng</span></a></li>
+
+                                }
+                                else
+                                {
+                                    <li><a data-ajax="true" data-ajax-success="loginFirstAlert" data-ajax-failure="addCartFailAlert" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Thêm vào yêu thích"><i class="ti-heart"></i><span>Thêm vào yêu thích</span></a></li>
+                                   <li><a asp-action="AddInCart" asp-controller="Cart" asp-route-id="@item.ProductId" data-ajax="true" data-ajax-success="addCartAlert" data-ajax-failure="addCartFailAlert" data-ajax-update="#mini-cart" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Thêm vào giỏ hàng"><i class="ti-shopping-cart"></i><span>Thêm vào giỏ hàng</span></a></li>
+                                }
+                            </ul>
+                        </div>
+                        <!-- /grid_item -->
+                    </div>
+                    <!-- /col -->
+                }
+
+            </div>
+            <!-- /row -->
+            <div class="pagination__wrapper">
+                <ul class="pagination">
+                    @Html.PagedListPager((IPagedList)Model, page => Url.Action("SearchByFilter", new{ page}))
+                </ul>
+            </div>
+        </div>
+        <!-- /col -->
+    </div>
+    <!-- /row -->
+
+</div>
+<!-- /container -->
+<script src="~/js/alert.js"></script>

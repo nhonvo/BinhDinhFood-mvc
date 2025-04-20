@@ -1,0 +1,68 @@
+﻿@using BinhDinhFood.Presentation.Models.Report
+@model Item
+@using System.Globalization
+@{
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+<td>
+  <div class="thumb_cart">
+    <img
+      src="~/Content/img/products/@Html.DisplayFor(modelItem => Model.Product.ProductImage)"
+      class="lazy"
+      alt="Image"
+    />
+  </div>
+  <span class="item_cart"
+    >@Html.DisplayFor(modelItem => Model.Product.ProductName)</span
+  >
+</td>
+<td>
+  <strong>@Model.TotalCost.ToString("#,###", cul.NumberFormat) Đ</strong>
+</td>
+<td>
+  <div class="numbers-row">
+    <input
+      type="text"
+      value="@Html.DisplayFor(modelItem => Model.Quantity)"
+      id=""
+      class="qty2"
+      name="quantity_1"
+    />
+    <a
+      asp-controller="Cart"
+      asp-action="UpdateItem"
+      asp-route-id="@Model.Product.ProductId"
+      asp-route-value="@(- 1)"
+      data-ajax="true"
+      data-ajax-update="#item-@Model.Product.ProductId"
+      class="dec button_inc"
+      >-</a>
+    <a
+      asp-controller="Cart"
+      asp-action="UpdateItem"
+      asp-route-id="@Model.Product.ProductId"
+      asp-route-value="@(+ 1)"
+      data-ajax="true"
+      data-ajax-update="#item-@Model.Product.ProductId"
+      class="inc button_inc"
+      >+</a>
+  </div>
+</td>
+<td>
+  <strong
+    >@Convert.ToDouble(@Model.Product.ProductPrice
+    -(@Convert.ToDouble(@Model.Product.ProductPrice) *
+    @Convert.ToDouble(@Model.Product.ProductDiscount) / 100)).ToString("#,###",
+    cul.NumberFormat) Đ</strong
+  >
+</td>
+<td class="options">
+  <a
+    asp-action="RemoveInCart"
+    asp-route-id="@Model.Product.ProductId"
+    data-ajax="true"
+    data-ajax-update="#render-body"
+    ><i class="ti-trash"></i
+  ></a>
+</td>
